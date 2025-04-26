@@ -4,6 +4,13 @@
 
 @section('content')
 <div class="p-6">
+    <!-- Debug Info -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+        <p class="text-blue-700 font-medium">Debug Mode</p>
+        <p class="text-sm text-blue-600">PHP Version: {{ phpversion() }}</p>
+        <p class="text-sm text-blue-600">Laravel Version: {{ app()->version() }}</p>
+    </div>
+
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Portfolios -->
@@ -19,7 +26,13 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Total Portfolios</dt>
                             <dd>
-                                <div class="text-lg font-medium text-gray-900">{{ $stats['portfolios'] }}</div>
+                                <div class="text-lg font-medium text-gray-900">
+                                    @if(isset($stats['portfolios']))
+                                        {{ $stats['portfolios'] }}
+                                    @else
+                                        <span class="text-red-500">N/A</span>
+                                    @endif
+                                </div>
                             </dd>
                         </dl>
                     </div>
@@ -45,7 +58,13 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Published Portfolios</dt>
                             <dd>
-                                <div class="text-lg font-medium text-gray-900">{{ $stats['published_portfolios'] }}</div>
+                                <div class="text-lg font-medium text-gray-900">
+                                    @if(isset($stats['published_portfolios']))
+                                        {{ $stats['published_portfolios'] }}
+                                    @else
+                                        <span class="text-red-500">N/A</span>
+                                    @endif
+                                </div>
                             </dd>
                         </dl>
                     </div>
@@ -71,7 +90,13 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Total Messages</dt>
                             <dd>
-                                <div class="text-lg font-medium text-gray-900">{{ $stats['total_messages'] }}</div>
+                                <div class="text-lg font-medium text-gray-900">
+                                    @if(isset($stats['total_messages']))
+                                        {{ $stats['total_messages'] }}
+                                    @else
+                                        <span class="text-red-500">N/A</span>
+                                    @endif
+                                </div>
                             </dd>
                         </dl>
                     </div>
@@ -97,7 +122,13 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Unread Messages</dt>
                             <dd>
-                                <div class="text-lg font-medium text-gray-900">{{ $stats['unread_messages'] }}</div>
+                                <div class="text-lg font-medium text-gray-900">
+                                    @if(isset($stats['unread_messages']))
+                                        {{ $stats['unread_messages'] }}
+                                    @else
+                                        <span class="text-red-500">N/A</span>
+                                    @endif
+                                </div>
                             </dd>
                         </dl>
                     </div>
@@ -118,7 +149,7 @@
             <p class="mt-1 text-sm text-gray-500">Recent inquiries from the contact form.</p>
         </div>
         
-        @if(count($latestMessages) > 0)
+        @if(isset($latestMessages) && count($latestMessages) > 0)
             <ul class="divide-y divide-gray-200">
                 @foreach($latestMessages as $message)
                     <li class="px-4 py-4 sm:px-6 hover:bg-gray-50">
@@ -167,6 +198,10 @@
                         <span aria-hidden="true"> &rarr;</span>
                     </a>
                 </div>
+            </div>
+        @elseif(!isset($latestMessages))
+            <div class="px-4 py-10 sm:px-6 text-center text-red-500">
+                <p>Error: $latestMessages variable not defined</p>
             </div>
         @else
             <div class="px-4 py-10 sm:px-6 text-center text-gray-500">

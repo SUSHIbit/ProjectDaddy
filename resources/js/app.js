@@ -4,6 +4,9 @@ import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
+// Initialize Alpine immediately to ensure it's available
+Alpine.start();
+
 // Define Alpine data and functions for scroll-based navigation
 document.addEventListener("alpine:init", () => {
     Alpine.data("navigation", () => ({
@@ -51,8 +54,6 @@ document.addEventListener("alpine:init", () => {
     }));
 });
 
-Alpine.start();
-
 // Add smooth scrolling to all links with hash
 document.addEventListener("DOMContentLoaded", function () {
     // Handle smooth scrolling for hash links
@@ -97,4 +98,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.parentNode.replaceChild(fallbackDiv, this);
             });
         });
+});
+
+// Make sure Alpine.js is properly initialized for the admin panel
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if Alpine.js was initialized
+    if (typeof Alpine === "undefined" || !Alpine.version) {
+        console.warn(
+            "Alpine.js not initialized properly. Trying to initialize again..."
+        );
+
+        // Try to load Alpine.js from CDN if it failed
+        const alpineScript = document.createElement("script");
+        alpineScript.src =
+            "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js";
+        alpineScript.defer = true;
+        document.head.appendChild(alpineScript);
+
+        // Initialize it after loading
+        alpineScript.onload = function () {
+            window.Alpine = Alpine;
+            Alpine.start();
+        };
+    }
 });

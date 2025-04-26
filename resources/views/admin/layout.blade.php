@@ -11,13 +11,14 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Alpine.js CDN (Fallback) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Tailwind CSS CDN (Fallback) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Additional styles -->
-    <style>
-        [x-cloak] { display: none !important; }
-    </style>
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100" x-data="{ sidebarOpen: false }">
@@ -257,5 +258,12 @@
             </main>
         </div>
     </div>
+
+    <!-- Inline Alpine.js as fallback (in case CDN or Vite fails) -->
+    <script>
+        if (typeof Alpine === 'undefined') {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer><\/script>');
+        }
+    </script>
 </body>
 </html>
