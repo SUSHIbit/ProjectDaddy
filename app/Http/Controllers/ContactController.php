@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactFormSubmission;
@@ -14,7 +15,14 @@ class ContactController extends Controller
      */
     public function index()
     {
-        return view('contact');
+        // Get contact information from settings
+        $contactInfo = [
+            'email' => Setting::get('contact_email', 'contact@example.com'),
+            'phone' => Setting::get('contact_phone', '+1 (555) 123-4567'),
+            'address' => Setting::get('contact_address', '123 Business Avenue, Suite 100, San Francisco, CA 94107')
+        ];
+        
+        return view('contact', compact('contactInfo'));
     }
     
     /**
@@ -31,11 +39,10 @@ class ContactController extends Controller
         // Store the message in the database
         $message = ContactMessage::create($validated);
         
-        // TODO: In the admin module, fetch the recipient email from settings
-        $recipientEmail = 'manager@example.com';
+        // Get recipient email from settings
+        $recipientEmail = Setting::get('contact_email', 'manager@example.com');
         
         // Send email notification
-        // We'll implement this mail class next
         Mail::to($recipientEmail)->send(new ContactFormSubmission($message));
         
         return redirect()->route('contact')->with('success', 'Your message has been sent successfully!');

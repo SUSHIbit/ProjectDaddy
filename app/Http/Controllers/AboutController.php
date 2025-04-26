@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -11,14 +12,12 @@ class AboutController extends Controller
      */
     public function aboutMe()
     {
-        // TODO: Fetch GM data from database in the admin module
-        // For now, we'll use static data
+        // Fetch GM data from settings
         $generalManager = [
-            'name' => 'John Doe',
-            'title' => 'General Manager',
-            'image' => '/images/general-manager.jpg',
-            'about' => 'Experienced General Manager with over 15 years in the industry, 
-                       specializing in strategic planning, team leadership, and business development.'
+            'name' => Setting::get('gm_name', 'John Doe'),
+            'title' => Setting::get('gm_title', 'General Manager'),
+            'image' => Setting::get('gm_image', '/images/general-manager.jpg'),
+            'about' => Setting::get('gm_about', 'Experienced General Manager with over 15 years in the industry, specializing in strategic planning, team leadership, and business development.')
         ];
         
         return view('about.me', compact('generalManager'));
@@ -29,11 +28,10 @@ class AboutController extends Controller
      */
     public function aboutCompany()
     {
-        // TODO: Fetch company data from database in the admin module
-        // For now, we'll use static data
+        // Fetch company data from settings
         $company = [
-            'name' => 'Acme Corporation',
-            'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+            'name' => Setting::get('company_name', 'Acme Corporation'),
+            'video_url' => Setting::get('company_about_video', 'https://www.youtube.com/embed/dQw4w9WgXcQ')
         ];
         
         return view('about.company', compact('company'));
@@ -44,13 +42,11 @@ class AboutController extends Controller
      */
     public function companyDetail()
     {
-        // TODO: Fetch company detail data from database in the admin module
-        // For now, we'll use static data
+        // Fetch company detail data from settings
         $companyDetail = [
-            'name' => 'Acme Corporation',
-            'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            'description' => 'Acme Corporation is a leading provider of innovative solutions, 
-                            dedicated to excellence and customer satisfaction.'
+            'name' => Setting::get('company_name', 'Acme Corporation'),
+            'video_url' => Setting::get('company_detail_video', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
+            'description' => Setting::get('company_description', 'Acme Corporation is a leading provider of innovative solutions, dedicated to excellence and customer satisfaction.')
         ];
         
         return view('about.company-detail', compact('companyDetail'));

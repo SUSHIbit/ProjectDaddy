@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Portfolio;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,39 +13,37 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // TODO: Fetch data from database in the admin module
-        // For now, we'll use static data
+        // Fetch General Manager data from settings
         $generalManager = [
-            'name' => 'John Doe',
-            'title' => 'General Manager',
-            'image' => '/images/general-manager.jpg',
-            'about' => 'Experienced General Manager with over 15 years in the industry, 
-                       specializing in strategic planning, team leadership, and business development.'
+            'name' => Setting::get('gm_name', 'John Doe'),
+            'title' => Setting::get('gm_title', 'General Manager'),
+            'image' => Setting::get('gm_image', '/images/general-manager.jpg'),
+            'about' => Setting::get('gm_about', 'Experienced General Manager with over 15 years in the industry, specializing in strategic planning, team leadership, and business development.')
         ];
         
+        // Fetch Company data from settings
         $company = [
-            'name' => 'Acme Corporation',
-            'logo' => '/images/company-logo.png',
-            'about_video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            'detail_video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            'description' => 'Acme Corporation is a leading provider of innovative solutions, 
-                            dedicated to excellence and customer satisfaction.'
+            'name' => Setting::get('company_name', 'Acme Corporation'),
+            'logo' => Setting::get('company_logo', '/images/company-logo.png'),
+            'about_video_url' => Setting::get('company_about_video', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
+            'detail_video_url' => Setting::get('company_detail_video', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
+            'description' => Setting::get('company_description', 'Acme Corporation is a leading provider of innovative solutions, dedicated to excellence and customer satisfaction.')
         ];
         
-        $portfolios = [
-            [
-                'id' => 1,
-                'title' => 'Portfolio 1',
-                'company_logo' => '/images/company-logo.png',
-                'pdf_file' => '/files/portfolio1.pdf'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Portfolio 2',
-                'company_logo' => '/images/company-logo.png',
-                'pdf_file' => '/files/portfolio2.pdf'
-            ]
-        ];
+        // Fetch Portfolios from database
+        $portfolios = Portfolio::where('is_published', true)
+            ->orderBy('order')
+            ->get()
+            ->map(function($portfolio) {
+                return [
+                    'id' => $portfolio->id,
+                    'title' => $portfolio->title,
+                    'company_logo' => $portfolio->company_logo,
+                    'pdf_file' => $portfolio->pdf_file,
+                    'description' => $portfolio->description,
+                    'highlights' => $portfolio->highlights
+                ];
+            });
         
         return view('home', compact('generalManager', 'company', 'portfolios'));
     }
