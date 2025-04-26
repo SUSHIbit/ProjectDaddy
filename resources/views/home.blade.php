@@ -29,7 +29,7 @@
                     <div x-data="{ open: false }" class="w-full max-w-md">
                         <button @click="open = !open" 
                                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none">
-                            Know About Me
+                            {{ open ? 'Hide Info' : 'Know About Me' }}
                         </button>
                         
                         <div x-show="open" 
@@ -80,69 +80,48 @@
                         {{ $generalManager['about'] }}
                     </p>
                     
-                    <!-- Example additional content - this would be dynamic in the admin module -->
+                    <!-- Experience Section - Dynamic from settings -->
                     <h3 class="text-xl font-semibold text-gray-800 mt-8 mb-4">Experience</h3>
                     <ul class="space-y-4">
-                        <li class="flex">
-                            <div class="mr-4 flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">CEO & Co-Founder</h4>
-                                <p class="text-gray-600">Acme Corporation, 2015 - Present</p>
-                            </div>
-                        </li>
-                        <li class="flex">
-                            <div class="mr-4 flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">VP of Operations</h4>
-                                <p class="text-gray-600">XYZ Industries, 2010 - 2015</p>
-                            </div>
-                        </li>
-                        <li class="flex">
-                            <div class="mr-4 flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">Senior Manager</h4>
-                                <p class="text-gray-600">ABC Company, 2005 - 2010</p>
-                            </div>
-                        </li>
+                        @foreach($generalManager['experience'] as $experience)
+                            <li class="flex">
+                                <div class="mr-4 flex-shrink-0">
+                                    <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">{{ $experience['title'] }}</h4>
+                                    <p class="text-gray-600">{{ $experience['company'] }}, {{ $experience['period'] }}</p>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                     
+                    <!-- Education Section - Dynamic from settings -->
                     <h3 class="text-xl font-semibold text-gray-800 mt-8 mb-4">Education</h3>
                     <ul class="space-y-4">
-                        <li class="flex">
-                            <div class="mr-4 flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">MBA, Business Administration</h4>
-                                <p class="text-gray-600">Harvard Business School, 2003 - 2005</p>
-                            </div>
-                        </li>
-                        <li class="flex">
-                            <div class="mr-4 flex-shrink-0">
-                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-900">Bachelor of Science, Engineering</h4>
-                                <p class="text-gray-600">MIT, 1999 - 2003</p>
-                            </div>
-                        </li>
+                        @foreach($generalManager['education'] as $education)
+                            <li class="flex">
+                                <div class="mr-4 flex-shrink-0">
+                                    <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">{{ $education['degree'] }}</h4>
+                                    <p class="text-gray-600">{{ $education['school'] }}, {{ $education['period'] }}</p>
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
+                </div>
+                
+                <div class="mt-10">
+                    <a href="#contact" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                       onclick="event.preventDefault(); document.querySelector(this.getAttribute('href')).scrollIntoView({behavior: 'smooth'});">
+                        Contact Me
+                    </a>
                 </div>
             </div>
         </div>
@@ -220,33 +199,17 @@
                             {{ $company['description'] }}
                         </p>
                         
-                        <!-- Example Company Details - would be managed through admin in the full implementation -->
+                        <!-- Company Services - Dynamic from settings -->
                         <h3 class="text-xl font-semibold text-gray-800 mt-8 mb-4">Our Services</h3>
                         <ul class="space-y-3">
-                            <li class="flex items-start">
-                                <svg class="h-6 w-6 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span>Strategic Business Consulting</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="h-6 w-6 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span>Digital Transformation Solutions</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="h-6 w-6 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span>Technology Implementation</span>
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="h-6 w-6 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span>Process Optimization</span>
-                            </li>
+                            @foreach($company['services'] as $service)
+                                <li class="flex items-start">
+                                    <svg class="h-6 w-6 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span>{{ $service }}</span>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -293,26 +256,39 @@
                                 <!-- Portfolio Details -->
                                 <div class="w-full md:w-1/2 p-4">
                                     <h4 class="text-lg font-semibold mb-2">Project Highlights</h4>
-                                    <ul class="space-y-2 mb-4">
-                                        <li class="flex items-start">
-                                            <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                            </svg>
-                                            <span>Increased efficiency by 35%</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                            </svg>
-                                            <span>Reduced costs by 20%</span>
-                                        </li>
-                                        <li class="flex items-start">
-                                            <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                            </svg>
-                                            <span>Implemented new technology</span>
-                                        </li>
-                                    </ul>
+                                    @if(isset($portfolio['highlights']) && is_array($portfolio['highlights']) && count($portfolio['highlights']) > 0)
+                                        <ul class="space-y-2 mb-4">
+                                            @foreach($portfolio['highlights'] as $highlight)
+                                                <li class="flex items-start">
+                                                    <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                    <span>{{ $highlight }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <ul class="space-y-2 mb-4">
+                                            <li class="flex items-start">
+                                                <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>Increased efficiency by 35%</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>Reduced costs by 20%</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="h-5 w-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                <span>Implemented new technology</span>
+                                            </li>
+                                        </ul>
+                                    @endif
                                     
                                     <a href="{{ asset($portfolio['pdf_file']) }}" 
                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -372,7 +348,7 @@
                                 </svg>
                                 <div>
                                     <p class="font-medium">Phone</p>
-                                    <p class="mt-1">+1 (555) 123-4567</p>
+                                    <p class="mt-1">{{ $contactInfo['phone'] }}</p>
                                 </div>
                             </div>
                             
@@ -382,7 +358,7 @@
                                 </svg>
                                 <div>
                                     <p class="font-medium">Email</p>
-                                    <p class="mt-1">contact@example.com</p>
+                                    <p class="mt-1">{{ $contactInfo['email'] }}</p>
                                 </div>
                             </div>
                             
@@ -393,17 +369,12 @@
                                 </svg>
                                 <div>
                                     <p class="font-medium">Office</p>
-                                    <p class="mt-1">123 Business Avenue, Suite 100<br>San Francisco, CA 94107</p>
+                                    <p class="mt-1">{!! nl2br(e($contactInfo['address'])) !!}</p>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="mt-12">
-                            <h3 class="text-xl font-semibold mb-4">Connect with me</h3>
-                            <div class="flex space-x-4">
-                                <a href="#" class="text-white hover:text-blue-200">
-                                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
                                     </svg>
                                 </a>
                                 <a href="#" class="text-white hover:text-blue-200">
@@ -484,3 +455,4 @@
             </div>
         </div>
     </section>
+@endsection

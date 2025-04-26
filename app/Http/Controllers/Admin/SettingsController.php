@@ -16,7 +16,11 @@ class SettingsController extends Controller
     {
         $settings = Setting::getByGroup('gm');
         
-        return view('admin.settings.general-manager', compact('settings'));
+        // Add extra settings for experience and education if they exist
+        $experience = json_decode(Setting::get('gm_experience', '[]'), true);
+        $education = json_decode(Setting::get('gm_education', '[]'), true);
+        
+        return view('admin.settings.general-manager', compact('settings', 'experience', 'education'));
     }
     
     /**
@@ -29,6 +33,14 @@ class SettingsController extends Controller
             'gm_title' => 'required|string|max:255',
             'gm_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'gm_about' => 'required|string',
+            'experience' => 'nullable|array',
+            'experience.*.title' => 'required|string|max:255',
+            'experience.*.company' => 'required|string|max:255',
+            'experience.*.period' => 'required|string|max:255',
+            'education' => 'nullable|array',
+            'education.*.degree' => 'required|string|max:255',
+            'education.*.school' => 'required|string|max:255',
+            'education.*.period' => 'required|string|max:255',
         ]);
         
         // Handle image upload
@@ -43,10 +55,19 @@ class SettingsController extends Controller
             Setting::set('gm_image', Storage::url($imagePath), 'gm');
         }
         
-        // Update other settings
+        // Update basic settings
         Setting::set('gm_name', $validated['gm_name'], 'gm');
         Setting::set('gm_title', $validated['gm_title'], 'gm');
         Setting::set('gm_about', $validated['gm_about'], 'gm');
+        
+        // Update experience and education
+        if (isset($validated['experience'])) {
+            Setting::set('gm_experience', json_encode($validated['experience']), 'gm');
+        }
+        
+        if (isset($validated['education'])) {
+            Setting::set('gm_education', json_encode($validated['education']), 'gm');
+        }
         
         return redirect()->route('admin.settings.general-manager')
             ->with('success', 'General Manager settings updated successfully.');
@@ -73,6 +94,8 @@ class SettingsController extends Controller
             'company_about_video' => 'required|url',
             'company_detail_video' => 'required|url',
             'company_description' => 'required|string',
+            'company_services' => 'nullable|array',
+            'company_services.*' => 'required|string|max:255',
         ]);
         
         // Handle logo upload
@@ -92,6 +115,11 @@ class SettingsController extends Controller
         Setting::set('company_about_video', $validated['company_about_video'], 'company');
         Setting::set('company_detail_video', $validated['company_detail_video'], 'company');
         Setting::set('company_description', $validated['company_description'], 'company');
+        
+        // Update services if present
+        if (isset($validated['company_services'])) {
+            Setting::set('company_services', json_encode($validated['company_services']), 'company');
+        }
         
         return redirect()->route('admin.settings.company')
             ->with('success', 'Company settings updated successfully.');
@@ -116,12 +144,22 @@ class SettingsController extends Controller
             'contact_email' => 'required|email|max:255',
             'contact_phone' => 'required|string|max:255',
             'contact_address' => 'required|string',
+            'social_links' => 'nullable|array',
+            'social_links.facebook' => 'nullable|url',
+            'social_links.twitter' => 'nullable|url',
+            'social_links.linkedin' => 'nullable|url',
+            'social_links.instagram' => 'nullable|url',
         ]);
         
         // Update settings
         Setting::set('contact_email', $validated['contact_email'], 'contact');
         Setting::set('contact_phone', $validated['contact_phone'], 'contact');
         Setting::set('contact_address', $validated['contact_address'], 'contact');
+        
+        // Update social links if present
+        if (isset($validated['social_links'])) {
+            Setting::set('social_links', json_encode($validated['social_links']), 'contact');
+        }
         
         return redirect()->route('admin.settings.contact')
             ->with('success', 'Contact settings updated successfully.');

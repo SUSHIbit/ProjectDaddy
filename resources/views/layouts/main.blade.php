@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'GM Portfolio') }}</title>
+    <title>{{ config('app.name', 'GM Portfolio') }} - @yield('title', 'Home')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -31,6 +31,10 @@
         .nav-link-highlight {
             transition: all 0.3s ease-in-out;
         }
+        
+        [x-cloak] { 
+            display: none !important; 
+        }
     </style>
 </head>
 <body class="font-sans antialiased">
@@ -38,7 +42,7 @@
         @include('layouts.navigation')
 
         <!-- Page Content -->
-        <main class="pt-16"> <!-- Add padding for fixed header -->
+        <main>
             @yield('content')
         </main>
         
@@ -79,35 +83,5 @@
             </div>
         </footer>
     </div>
-
-    <!-- Scripts for smooth scrolling detection -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to check which section is in view and update navigation
-            function checkSectionInView() {
-                const sections = document.querySelectorAll('section[id]');
-                const scrollPosition = window.scrollY;
-                
-                // Find the section that's currently in view
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 100; // Offset to trigger a bit earlier
-                    const sectionHeight = section.offsetHeight;
-                    
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                        // Dispatch custom event that Alpine.js can listen for
-                        window.dispatchEvent(new CustomEvent('section-in-view', { 
-                            detail: { id: section.id }
-                        }));
-                    }
-                });
-            }
-            
-            // Run on scroll
-            window.addEventListener('scroll', checkSectionInView);
-            
-            // Run once on load
-            checkSectionInView();
-        });
-    </script>
 </body>
 </html>
